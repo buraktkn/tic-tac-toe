@@ -1,24 +1,36 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
-import Button from './components/Button';
-import Button2 from './components/Button2';
-import Button3 from './components/Button3';
-import Board from './components/Board'
+import Contact from './components/Contact';
+import Form from './components/Form';
+import Todo from './components/todo/Todo';
+
 function App() {
+  const [contacts, setContacts]=useState([
+    {fullname:'Burak',
+      phoneNumber:123 
+     },
+     {fullname:'Apo',
+       phoneNumber:456 
+     },
+     {fullname:'Tekin',
+       phoneNumber:678 
+     }
+  ])
+
+  useEffect(()=>{
+    console.log(contacts);
+  },[contacts])
+  
   return (
     <div className="App">
-      {/*
-      <h1>Arttırıp Azaltma Butonu</h1>
-      <Button/>
-      <h1>Ayrı olarak değişen butonlar</h1>
-      <Button2/>
-      <Button2/>
-      <h1>Aynı değişen butonlar</h1>
-      <Button3/>
-      */}
-      <Board/>
+       {/* <div className='form'>
+       <Contact contacts={contacts}/>
+       <Form addContact={setContacts} contacts={contacts}/>
+       </div> */}
+
+       <Todo/>
     </div>
   );
-}
-
+} 
+  
 export default App;
