@@ -1,29 +1,71 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
 
 export default function Todo() {
+  const [listItem, setListItem] = useState([
+    { description: "Learn JavaScript", class: "view" },
+    { description: "Learn React", class: "view" },
+    { description: "Have a Life", class: "view" },
+  ]);
+  const [filteredList, setFilteredList] = useState([listItem]);
+  const [newItem, setNewItem] = useState([]);
 
-    const [listItem, setListItem] = useState([
-      {description:'Learn JavaScript'},
-      {description:'Learn React'},
-      {description:'Have a Life'}
-    ]);
-    const [newItem, setNewItem]= useState('');
-    const onChangeInput = (e) =>{
-      setNewItem(e.target.value)};
+  useEffect(() => {
+    setFilteredList(listItem);
+  }, [listItem]);
 
-    const handleSubmit=(e)=>{
-      e.preventDefault();
-      if(newItem.trim()==="") return;
-      
-      setListItem([...listItem, {description : newItem}]);
-      setNewItem('')
-  }
-  function handleDelete(description) {
-    const newList=listItem.filter(li=>li.description !== description )
-    setListItem(newList)
+  const onChangeInput = (e) => {
+    setNewItem(e.target.value);
   };
-  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (newItem.trim() === "") return;
+    setListItem([...listItem, { description: newItem, class: "view" }]);
+    setNewItem("");
+  };
+  function handleDelete(description) {
+    const newList = listItem.filter((li) => li.description !== description);
+    setListItem(newList);
+  }
+  function completeTask(description) {
+    const updatedList = listItem.map((item) => {
+      if (item.description === description) {
+        return {
+          ...item,
+          class: item.class === "completed" ? "view" : "completed",
+        };
+      }
+      return item;
+    });
+    setListItem(updatedList);
+  }
+  function completeAll() {
+    const completedList = listItem.map((item) => ({
+      ...item,
+      class: item.class === "completed" ? "view" : "completed",
+    }));
+    setListItem(completedList);
+  }
+  function deleteAllCompleted() {
+    const newViewList = listItem.filter((item) => item.class === "view");
+    setListItem(newViewList);
+  }
+  function showAll() {
+    const newActiveList = listItem.filter(
+      (item) => item.class === "view" || item.class === "completed"
+    );
+    setFilteredList(newActiveList);
+  }
+  function showActive() {
+    const newActiveList = listItem.filter((item) => item.class === "view");
+    setFilteredList(newActiveList);
+  }
+  function showCompleted() {
+    const newCompletedList = listItem.filter(
+      (item) => item.class === "completed"
+    );
+    setFilteredList(newCompletedList);
+  }
   return (
     <div>
       <section class="todoapp">
@@ -41,16 +83,26 @@ export default function Todo() {
         </header>
         <section class="main">
           <input class="toggle-all" type="checkbox" />
-          <label for="toggle-all">Mark all as complete</label>
+          <label for="toggle-all" onClick={completeAll}>
+            Mark all as complete
+          </label>
           <ul class="todo-list">
-            {listItem.map((item,index)=>(
-              <li key={index} class="view">
-              <div class="view">
-                <input class="toggle" type="checkbox" />
-                <label>{item.description}</label>
-                <button class="destroy" onClick={()=>handleDelete(item.description)}></button>
-              </div>
-            </li>
+            {filteredList.map((item, index) => (
+              <li key={index} class={item.class}>
+                <div class="view">
+                  <input
+                    class="toggle"
+                    type="checkbox"
+                    checked={item.class === "completed"}
+                    onChange={() => completeTask(item.description)}
+                  />
+                  <label property="text">{item.description}</label>
+                  <button
+                    class="destroy"
+                    onClick={() => handleDelete(item.description)}
+                  ></button>
+                </div>
+              </li>
             ))}
           </ul>
         </section>
@@ -61,12 +113,25 @@ export default function Todo() {
             items left
           </span>
           <ul class="filters">
-            <li><a href="#/" class="selected">All</a></li>
-            <li><a href="#/">Active</a></li>
-            <li><a href="#/">Completed</a></li>
+            <li>
+              <a href="#/" class="selected" onClick={showAll}>
+                All
+              </a>
+            </li>
+            <li>
+              <a href="#/" onClick={showActive}>
+                Active
+              </a>
+            </li>
+            <li>
+              <a href="#/" onClick={showCompleted}>
+                Completed
+              </a>
+            </li>
           </ul>
-
-          <button class="clear-completed">Clear completed</button>
+          <button class="clear-completed" onClick={deleteAllCompleted}>
+            Clear completed
+          </button>
         </footer>
       </section>
 
