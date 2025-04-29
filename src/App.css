@@ -1,6 +1,5 @@
 .App {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh ;
@@ -12,3 +11,32 @@
   padding: 50px;
 }
 
+.active{
+  background-color: black;
+  color: white;
+}
+input{
+  display: block;
+}
+
+.dark{
+  background-color:darkolivegreen;
+  color: white;
+}
+.light{
+  background-color: white;
+  color: black;
+}
+
+.drop-size{
+  max-height: 200px;
+  overflow: scroll;
+}
+
+.card{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 8rem;
+  float: left;
+}

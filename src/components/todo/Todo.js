@@ -72,13 +72,7 @@ export default function Todo() {
         <header class="header">
           <h1>todos</h1>
           <form onSubmit={handleSubmit}>
-            <input
-              class="new-todo"
-              placeholder="What needs to be done?"
-              autoFocus
-              value={newItem}
-              onChange={onChangeInput}
-            />
+            <input class="new-todo" placeholder="What needs to be done?" autoFocus value={newItem} onChange={onChangeInput} />
           </form>
         </header>
         <section class="main">
